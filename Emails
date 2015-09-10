@@ -1,0 +1,61 @@
+/**
+ *@author Jenny Wong-Welch
+ * September 1, 2015
+ */
+
+function formSubmitReply(e) {
+  var userEmail = e.values[3];
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var lastRow = sheet.getLastRow();
+  // Set the status of the new ticket to 'New'.
+  // Column F is the Status column
+  sheet.getRange(lastRow, getColIndexByName("Status")).setValue("New");
+  
+  //Column R is the Email Script
+  sheet.getRange(lastRow, getColIndexByName("EmailScript")).setFormula("=VLOOKUP(B" + lastRow + ", Sheet2!$A$2:$B$6, 2)");
+  
+  // Calculate how many other 'New' tickets are ahead of this one
+  var numNew = 0;
+  for (var i = 2; i < lastRow; i++) {
+    if (sheet.getRange(i, getColIndexByName("Status")).getValue() == "New") {
+      numNew++;
+    }
+  }
+  MailApp.sendEmail(userEmail,
+                    "build IT 3D Print Request #1" + lastRow,
+                    "Thanks for submitting your 3D print request. \n\nWe'll start " +
+                    "working on it as soon as possible. You are currently " +
+                    "number " +
+                    (numNew + 1) + " in the print queue. \n\nbuild IT @SDSU Library.",
+                    {name:"build IT @SDSU Library"});
+}
+
+function getColIndexByName(colName) {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var numColumns = sheet.getLastColumn();
+  var row = sheet.getRange(1, 1, 1, numColumns).getValues();
+  for (i in row[0]) {
+    var name = row[0][i];
+    if (name == colName) {
+      return parseInt(i) + 1;
+    }
+  }
+  return -1;
+}
+
+
+function emailStatusUpdates() {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var row = sheet.getActiveRange().getRowIndex();
+  var userEmail = sheet.getRange(row, getColIndexByName("Email")).getValue();
+  var subject = "build IT 3D Print Request #1" + row;
+  var body = "We've updated the status of your 3D print request.\n\nStatus: " + sheet.getRange(row, getColIndexByName("Status")).getValue();
+  body += "\n\n" + sheet.getRange(row, getColIndexByName("EmailScript")).getValue();
+
+  MailApp.sendEmail(userEmail, subject, body, {name:"build IT @ SDSU Library"});
+}
+
+function onOpen() {
+  var subMenus = [{name:"Send Status Email", functionName: "emailStatusUpdates"}];
+  SpreadsheetApp.getActiveSpreadsheet().addMenu("Request Menu", subMenus);
+}​
