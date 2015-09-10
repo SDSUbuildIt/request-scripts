@@ -10,7 +10,7 @@ function newColorName() {
   /**
    * Search through "Print Totals" to find a cell in column D with a red background.
    * The background is red by condiitonal formatting if the hours printed is greater than 3.
-   * After a red cell is found, find the name in "Sheet1" and color the cell red.
+   * After a red cell is found, find the name in "Sheet1" and color the cell red. Test.
    *
    * @author Lindsay White
    * September 9, 2015
