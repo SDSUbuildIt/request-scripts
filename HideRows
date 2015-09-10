@@ -1,0 +1,29 @@
+function hideRows() {
+  
+  /**
+   * Program finds a row where the status (in column B) is changed to "Complete".
+   * Every row found with "Complete" in Column B is hidden.
+   *
+   * @author Lindsay White
+   * September 1, 2015
+   */
+  
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
+  var lastRow = sheet.getLastRow();
+  var i = 1;
+  var range = sheet.getRange("B" + i);
+  var status = range.getValue();
+
+  for (i = 2; i <= lastRow; i++)
+  {
+    var status = sheet.getRange("B" + i).getValue();
+    var status1 = sheet.getRange(("B" + i));
+   if (status == "Complete")
+   {
+     sheet.hideRow(status1);
+   }
+  }
+    return;
+  
+// trigger every day, once at midnight
+}
