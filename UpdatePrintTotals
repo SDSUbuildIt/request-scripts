@@ -1,0 +1,24 @@
+function updatePrintTotals()
+{
+  
+  /**
+   * Program copies formulas in a spreadsheet to the bottoms of the columns the formulas are in, up until the last row that is populated.
+   *
+   * @author Lindsay white
+   * September 1, 2015
+   */
+  
+  var sheet1 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Print Totals");
+  var lastRow1 = sheet1.getLastRow() - 1;
+  var source1 = sheet1.getRange("B2:D2");
+  var testCell1 = "na";
+  for (var a = lastRow1; a > 2; a--)
+  {
+    testCell1 = sheet1.getRange(a, 2).getValue();
+    if (testCell1 == "")
+    {
+      source1.copyTo(sheet1.getRange(a,2,1,3));
+    }
+  }
+//there is a trigger setup to run this every time the form sumbits.
+}
