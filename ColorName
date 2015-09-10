@@ -1,0 +1,39 @@
+function newColorName() {
+  var editSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
+  var timeSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Print Totals");
+  var editLastRow = editSheet.getLastRow();
+  var timeLastRow = timeSheet.getLastRow();
+  
+  var i = 2;
+  var j = 2;
+  
+  /**
+   * Search through "Print Totals" to find a cell in column D with a red background.
+   * The background is red by condiitonal formatting if the hours printed is greater than 3.
+   * After a red cell is found, find the name in "Sheet1" and color the cell red.
+   *
+   * @author Lindsay White
+   * September 9, 2015
+   */
+  for (j = 2; j <= timeLastRow; j++)
+  {
+    var timeRange = timeSheet.getRange('D' + j);
+    var time = timeRange.getBackground();
+    if (time == "#ff0000")
+    {
+      var timeName = timeSheet.getRange('A' + j);
+      var nameTime = timeName.getValue();
+
+      for (i = 2; i <= editLastRow; i++)
+      {
+        var editRange = editSheet.getRange('I' + i);
+        var nameEdit = editRange.getValue()
+        if (nameEdit == nameTime)
+        {
+          editRange.setBackground("#ff0000"); 
+        }
+       }
+    }
+  }
+  //triggered to run every 2 hours.
+}
