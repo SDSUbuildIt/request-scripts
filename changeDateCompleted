@@ -1,0 +1,29 @@
+function changeDateCompleted(e) // onEdit trigger
+{
+  
+  /**
+   * Program places a date in a row based on a change in the same row.
+   *
+   * @author Joey Casabar
+   * September 1, 2015
+   */
+  
+  var ss = e.source;
+  var sheet = ss.getActiveSheet();
+  var sheetName = sheet.getName();
+  if (sheetName == 'Sheet1') // check if editing log sheet
+  {
+    var range1 = e.range;
+    var rCol1 = range1.getColumn();
+    var rRow1 = range1.getRow();
+    var value = e.value;
+    if (rCol1 == 2 && value == 'Printing')
+    {
+      sheet.getRange(rRow1, 5).setValue(ss.getSheetByName('Print Totals').getSheetValues(4, 7, 1, 1)); //(4,7) is location of 'Today' cell
+      //sheet.getRange(rRow1, 5).setValue(new Date);
+    }
+  }
+
+}
+
+  
